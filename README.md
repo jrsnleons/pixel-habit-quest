@@ -18,7 +18,7 @@ npm test             # quest rules (Vitest)
 npm run test:e2e     # browser flows (Playwright, desktop + mobile)
 ```
 
-`.env` holds the Supabase URL and publishable key. Both are safe to ship to browsers; data is protected by the policies in `supabase/migrations`.
+Copy `.env.example` to `.env.local` and fill in the Supabase URL and publishable key. Deploys read the same two values from the repository's Actions secrets. The publishable key ends up in the browser bundle by design; data is protected by the row level security policies in `supabase/migrations`.
 
 ## How progress works
 
