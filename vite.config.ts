@@ -9,6 +9,8 @@ export default defineConfig({
   base,
   plugins: [
     react(),
+    // PREVIEW builds a single-page demo without the service worker.
+    !process.env.PREVIEW &&
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['apple-touch-icon.png'],

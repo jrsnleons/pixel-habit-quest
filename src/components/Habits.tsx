@@ -30,6 +30,7 @@ function describeDays(days: number[]): string {
 
 export function HabitsPage({ state, today, update }: Props) {
   const [editing, setEditing] = useState<Habit | 'new' | null>(null)
+  const [confirming, setConfirming] = useState<string | null>(null)
   const habits = activeHabits(state, today)
 
   return (
@@ -70,18 +71,27 @@ export function HabitsPage({ state, today, update }: Props) {
               <button className="icon-btn" aria-label={`Edit ${h.name}`} onClick={() => setEditing(h)}>
                 <Pencil size={16} />
               </button>
-              <button
-                className="icon-btn"
-                aria-label={`Archive ${h.name}`}
-                onClick={() => {
-                  if (confirm(`Archive “${h.name}”? Its past check-ins stay in your history.`)) {
-                    update((s) => archiveHabit(s, h.id, today))
-                  }
-                }}
-              >
+              <button className="icon-btn" aria-label={`Archive ${h.name}`} onClick={() => setConfirming(h.id)}>
                 <Archive size={16} />
               </button>
             </span>
+            {confirming === h.id && (
+              <div className="confirm" role="alertdialog" aria-label={`Archive ${h.name}?`}>
+                <span>Archive this habit? Past check-ins stay in your history.</span>
+                <button className="btn btn--ghost" onClick={() => setConfirming(null)}>
+                  Keep it
+                </button>
+                <button
+                  className="btn btn--danger"
+                  onClick={() => {
+                    update((s) => archiveHabit(s, h.id, today))
+                    setConfirming(null)
+                  }}
+                >
+                  Archive
+                </button>
+              </div>
+            )}
           </li>
         ))}
       </ul>
